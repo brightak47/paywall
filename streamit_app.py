@@ -25,6 +25,7 @@ import json
 import re
 
 st.set_page_config(layout="wide")
+st.image("https://github.com/brightak47/paywall/blob/main/YoutubeViralChatbot.png", width=200)
 st.title("Youtube Viral Chatbot 🚀")
 
 add_auth(required=True)
