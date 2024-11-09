@@ -2961,7 +2961,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-st.image("https://raw.githubusercontent.com/CertifiedAuthur/Youtube-Viral-Bot/refs/heads/main/YoutubeViralChatbot.png", width=200)
+st.image("https://github.com/brightak47/paywall/blob/main/YoutubeViralChatbot.png", width=200)
 st.title("YouTube Viral ChatBot")
 
 # Updated get_service to handle missing credentials
