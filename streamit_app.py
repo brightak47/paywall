@@ -31,8 +31,7 @@ st.title("Youtube Viral Chatbot 🚀")
 # HTML for a justified paragraph
 justified_paragraph = """
 <div style='text-align: justify;'>
-    This is one of the most powerful<br><br>
-    AI chatbot to make viral videos that get a million of views in short 
+    This is one of the most powerful AI chatbot to make viral videos <br><br> that get a million of views in short 
     time. <br><br> Go ahead 🚀.
 </div>
 """
