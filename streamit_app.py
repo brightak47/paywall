@@ -25,7 +25,7 @@ import json
 import re
 
 st.set_page_config(layout="wide")
-# st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
+st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
 st.title("Youtube Viral Chatbot 🚀")
 
 # HTML for a justified paragraph
@@ -2974,8 +2974,8 @@ def main():
 if __name__ == "__main__":
     main()
 
-st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
-st.title("YouTube Viral ChatBot")
+# st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
+# st.title("YouTube Viral ChatBot")
 
 # Updated get_service to handle missing credentials
 def get_service():
