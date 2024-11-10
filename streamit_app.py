@@ -2865,7 +2865,7 @@ def upload_pattern_insights(channel_url):
     return df
 
 # serverless connection
-redirect_uri = "https://youtube-viral-bot-fg582pnkthmwjy7isaxrbp.streamlit.app"
+redirect_uri = "https://mystreamitapp2010.streamlit.app/"
 
 # Local Storage Functions
 # Function to retrieve data from local storage
