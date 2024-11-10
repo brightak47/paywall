@@ -28,6 +28,18 @@ st.set_page_config(layout="wide")
 st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
 st.title("Youtube Viral Chatbot 🚀")
 
+# HTML for a justified paragraph
+justified_paragraph = """
+<div style='text-align: justify;'>
+    You are just one step away to start using one of the most powerful
+    AI chatbot to make viral videos that get a million of views in a short 
+    time. Go ahead and subscribe.
+</div>
+"""
+
+# Render the HTML
+st.markdown(justified_paragraph, unsafe_allow_html=True)
+
 add_auth(required=True)
 
 # ONLY AFTER THE AUTHENTICATION + SUBSCRIPTION, THE USER WILL SEE THIS ⤵
