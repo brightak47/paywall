@@ -45,7 +45,7 @@ add_auth(required=True)
 # The email and subscription status is stored in session state.
 # st.write(f"Subscription Status: {st.session_state.user_subscribed}")
 # st.write("🎉 Yay! You're all set and subscribed! 🎉")
-st.write(f'By the way, your email is: {st.session_state.email}')
+# st.write(f'By the way, your email is: {st.session_state.email}')
 # Helper function to convert large numbers to thousands, millions, etc.
 def format_number(number):
     if number >= 1_000_000_000:
