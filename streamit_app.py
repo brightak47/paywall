@@ -39,13 +39,13 @@ justified_paragraph = """
 # Render the HTML
 st.markdown(justified_paragraph, unsafe_allow_html=True)
 
-# add_auth(required=True)
+add_auth(required=True)
 
 # ONLY AFTER THE AUTHENTICATION + SUBSCRIPTION, THE USER WILL SEE THIS ⤵
-# The email and subscription status is stored in session state.
-# st.write(f"Subscription Status: {st.session_state.user_subscribed}")
-# st.write("🎉 Yay! You're all set and subscribed! 🎉")
-# st.write(f'By the way, your email is: {st.session_state.email}')
+The email and subscription status is stored in session state.
+st.write(f"Subscription Status: {st.session_state.user_subscribed}")
+st.write("🎉 Yay! You're all set and subscribed! 🎉")
+st.write(f'By the way, your email is: {st.session_state.email}')
 # Helper function to convert large numbers to thousands, millions, etc.
 # List of users who have requested refunds
 # Ideally, this would be a database or external list you update dynamically
