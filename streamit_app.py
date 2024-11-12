@@ -25,7 +25,7 @@ import json
 import re
 
 st.set_page_config(layout="wide")
-st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
+# st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
 st.title("Youtube Viral Chatbot 🚀")
 
 # HTML for a justified paragraph
