@@ -67,7 +67,7 @@ justified_paragraph = """
 # Render the HTML
 st.markdown(justified_paragraph, unsafe_allow_html=True)
 
-add_auth(required=True)
+# add_auth(required=True)
 
 # ONLY AFTER THE AUTHENTICATION + SUBSCRIPTION, THE USER WILL SEE THIS ⤵
 # The email and subscription status is stored in session state.
