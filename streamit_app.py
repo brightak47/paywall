@@ -25,33 +25,33 @@ import numpy as np
 import json
 import re
 
-# Initialize cookies
-cookies = EncryptedCookieManager(prefix="my_app")
+# Initialize cookies with password from secrets
+cookies = EncryptedCookieManager(
+    prefix="my_app",
+    password=st.secrets["cookies"]["password"]
+)
 
 # Load the cookies (must be called before accessing them)
 if not cookies.ready():
     st.stop()
 
-# Function to set a persistent user cookie
-def set_user_cookie(username):
-    cookies["user_data"] = username
-    cookies.save()  # Save the cookie
-    st.success(f"Welcome, {username}! Your session is saved.")
+# Set and manage cookies as per your logic
+if st.button("Set Persistent Cookie"):
+    cookies["user_data"] = "example_user"
+    cookies.save()  # Saves the cookie in the browser
+    st.write("Persistent cookie set!")
 
-# Function to display a welcome message if the user cookie exists
-def display_welcome_message():
-    if "user_data" in cookies:
-        st.write(f"Welcome back, {cookies['user_data']}!")
-    else:
-        st.write("No user cookie found.")
+# Access a cookie that persists across sessions
+if "user_data" in cookies:
+    st.write("Welcome back,", cookies["user_data"])
+else:
+    st.write("No user cookie found.")
 
-# Function to delete the user cookie
-def delete_user_cookie():
-    if "user_data" in cookies:
-        del cookies["user_data"]
-        cookies.save()
-        st.info("Cookie deleted!")
-        
+# Option to delete the cookie
+if st.button("Delete Cookie"):
+    del cookies["user_data"]
+    cookies.save()
+    st.write("Cookie deleted!")
 st.set_page_config(layout="wide")
 # st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
 st.title("Youtube Viral Chatbot 🚀")
