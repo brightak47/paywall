@@ -47,6 +47,52 @@ st.markdown(justified_paragraph, unsafe_allow_html=True)
 # st.write("🎉 Yay! You're all set and subscribed! 🎉")
 # st.write(f'By the way, your email is: {st.session_state.email}')
 # Helper function to convert large numbers to thousands, millions, etc.
+# List of users who have requested refunds
+# Ideally, this would be a database or external list you update dynamically
+blocked_users = ["user1@example.com", "user2@example.com"]
+
+# Function to check if user is blocked
+def is_user_blocked(user_id):
+    return user_id in blocked_users
+
+# Main application code
+def main():
+    # Get user ID from st-paywall (assuming it provides user ID functionality)
+    user_id = st_paywall.get_user_id()  # Example function; adjust as needed
+
+    # Check if user is blocked
+    if is_user_blocked(user_id):
+        st.warning("Access Denied: This account has been restricted due to a refund request.")
+    else:
+        st.write("Welcome to the premium content!")
+        # Add the rest of your application code here
+
+if __name__ == "__main__":
+    main()
+
+# Initialize cookies
+cookies = EncryptedCookieManager(prefix="my_app")
+
+# Load the cookies (you must call this before accessing them)
+if not cookies.ready():
+    st.stop()
+
+# Set a cookie
+if st.button("Set Cookie"):
+    cookies["user_data"] = "example_user"
+    cookies.save()  # Save the cookie
+    st.write("Cookie set!")
+
+# Access a cookie
+if "user_data" in cookies:
+    st.write("Cookie value:", cookies["user_data"])
+
+# Delete a cookie
+if st.button("Delete Cookie"):
+    del cookies["user_data"]
+    cookies.save()
+    st.write("Cookie deleted!")
+# Helper function to convert large numbers to thousands, millions, etc.
 def format_number(number):
     if number >= 1_000_000_000:
         return f"{number / 1_000_000_000:.1f}B"
@@ -931,8 +977,14 @@ def show_related_keywords(kw_list, location):
         
         return df
     
-    except Exception as e:
+    except ResponseError as e:
+        if e.response.status_code == 429:  # If rate limit error
+            st.write("Rate limit exceeded, retrying in 60 seconds...")
+            time.sleep(60)  # Wait 60 seconds before retrying
+            return show_related_keywords(kw_list, location)  # Retry the request
+        
         return pd.DataFrame({"error": [str(e)]})
+
 
 def analyze_keyword_competition(kw_list, location):
     try:
@@ -957,37 +1009,14 @@ def analyze_keyword_competition(kw_list, location):
         df = interest_by_region
         
         return df
-    
-    except Exception as e:
+
+    except ResponseError as e:
+        if e.response.status_code == 429:  # If rate limit error
+            st.write("Rate limit exceeded, retrying in 60 seconds...")
+            time.sleep(60)  # Wait 60 seconds before retrying
+            return analyze_keyword_competition(kw_list, location)  # Retry the request
+        
         return pd.DataFrame({"error": [str(e)]})
-
-
-def get_best_tags(kw_list, location):
-    try:
-        # Split kw_list into individual keywords
-        keyword = kw_list[0].strip()
-        
-        # Build payload for Google Trends
-        pytrends.build_payload([keyword], cat=0, timeframe="now 7-d", geo=location, gprop="")
-        
-        # Get related queries
-        related_queries = pytrends.related_queries()
-        
-        print("Reached related_queries")
-        
-        # Print exception if related_queries is empty
-        if related_queries.empty:
-            print("related_queries is empty")
-        
-        print("Related Queries:")
-        print(related_queries)
-        
-        # ... (rest of the function remains the same)
-    
-    except Exception as e:
-        print("Error occurred:")
-        print(str(e))
-
 
 def show_keyword_trends(timeframe, kw_list, location):
     try:
@@ -1020,8 +1049,12 @@ def show_keyword_trends(timeframe, kw_list, location):
         
         return trends
     
-    except Exception as e:
-        # Handle exceptions and return error message
+    except ResponseError as e:
+        if e.response.status_code == 429:  # If rate limit error
+            st.write("Rate limit exceeded, retrying in 60 seconds...")
+            time.sleep(60)  # Wait 60 seconds before retrying
+            return show_keyword_trends(timeframe, kw_list, location)  # Retry the request
+        
         return pd.DataFrame({"error": [str(e)]})
 
 def compare_keywords(keyword1, keyword2, location, timeframe="now 7-d"):
@@ -1055,9 +1088,13 @@ def compare_keywords(keyword1, keyword2, location, timeframe="now 7-d"):
         
         return comparison_data
     
-    except Exception as e:
+    except ResponseError as e:
+        if e.response.status_code == 429:  # If rate limit error
+            st.write("Rate limit exceeded, retrying in 60 seconds...")
+            time.sleep(60)  # Wait 60 seconds before retrying
+            return compare_keywords(keyword1, keyword2, location, timeframe)  # Retry the request
+        
         return pd.DataFrame({"error": [str(e)]})
-
     except Exception as e:
         print(f"An error occurred: {e}")
         return pd.DataFrame({"error": [str(e)]})
@@ -2863,138 +2900,171 @@ def upload_pattern_insights(channel_url):
     st.pyplot(plt)
     return df
 
-# serverless connection
-redirect_uri = "https://mystreamitapp2010.streamlit.app"
+# # serverless connection
+# redirect_uri = "https://youtube-viral-bot-fg582pnkthmwjy7isaxrbp.streamlit.app"
 
-# Local Storage Functions
-# Function to retrieve data from local storage
-def ls_get(k, key=None):
-    if key is None:
-        key = f"ls_get_{k}"
-    return st_js_blocking(f"return JSON.parse(localStorage.getItem('{k}'));", key=key)
+# # Local Storage Functions
+# # Function to retrieve data from local storage
+# def ls_get(k, key=None):
+#     if key is None:
+#         key = f"ls_get_{k}"
+#     return st_js_blocking(f"return JSON.parse(localStorage.getItem('{k}'));", key=key)
 
-# Function to set data in local storage
-def ls_set(k, v, key=None):
-    if key is None:
-        key = f"ls_set_{k}"
-    jdata = json.dumps(v, ensure_ascii=False)
-    st_js_blocking(f"localStorage.setItem('{k}', JSON.stringify({jdata}));", key=key)
+# # Function to set data in local storage
+# def ls_set(k, v, key=None):
+#     if key is None:
+#         key = f"ls_set_{k}"
+#     jdata = json.dumps(v, ensure_ascii=False)
+#     st_js_blocking(f"localStorage.setItem('{k}', JSON.stringify({jdata}));", key=key)
 
-# Initialize session with user info if it exists in local storage
-def init_session():
-    key = "user_info_init_session"
-    if "user_info" not in st.session_state:
-        user_info = ls_get("user_info", key=key)
-        if user_info:
-            st.session_state["user_info"] = user_info
+# # Initialize session with user info if it exists in local storage
+# def init_session():
+#     key = "user_info_init_session"
+#     if "user_info" not in st.session_state:
+#         user_info = ls_get("user_info", key=key)
+#         if user_info:
+#             st.session_state["user_info"] = user_info
 
-def auth_flow():
-    st.write("Welcome to My App!")
+# def auth_flow():
+#     st.write("Welcome to My App!")
     
-    # Check if client config file is uploaded
-    if "client_config" not in st.session_state:
-        st.error("Please upload your Google Client JSON file")
-        client_config_file = st.sidebar.file_uploader("Upload Client JSON file", type=["json"])
-        if client_config_file:
-            st.session_state["client_config"] = json.load(client_config_file)
-        else:
-            return
+#     # Check if client config file is uploaded
+#     if "client_config" not in st.session_state:
+#         st.error("Please upload your Google Client JSON file")
+#         client_config_file = st.sidebar.file_uploader("Upload Client JSON file", type=["json"])
+#         if client_config_file:
+#             st.session_state["client_config"] = json.load(client_config_file)
+#         else:
+#             return
     
-    # Proceed with auth flow
-    auth_code = st.query_params.get("code")
-    flow = Flow.from_client_config(
-        st.session_state["client_config"],
-        scopes=[
-            "https://www.googleapis.com/auth/youtube.force-ssl", 
-            "https://www.googleapis.com/auth/userinfo.profile", 
-            "https://www.googleapis.com/auth/userinfo.email", 
-            "https://www.googleapis.com/auth/youtubepartner", 
-            "https://www.googleapis.com/auth/youtube", 
-            "openid"
-        ],
-        redirect_uri=redirect_uri,
-    )
+#     # Proceed with auth flow
+#     auth_code = st.query_params.get("code")
+#     flow = Flow.from_client_config(
+#         st.session_state["client_config"],
+#         scopes=[
+#             "https://www.googleapis.com/auth/youtube.force-ssl", 
+#             "https://www.googleapis.com/auth/userinfo.profile", 
+#             "https://www.googleapis.com/auth/userinfo.email", 
+#             "https://www.googleapis.com/auth/youtubepartner", 
+#             "https://www.googleapis.com/auth/youtube", 
+#             "openid"
+#         ],
+#         redirect_uri=redirect_uri,
+#     )
     
-    if auth_code:
-        flow.fetch_token(code=auth_code)
-        credentials = flow.credentials
-        st.session_state["credentials"] = credentials  # Store credentials
-        st.write("Login Done")
-        user_info_service = build(
-            serviceName="oauth2",
-            version="v2",
-            credentials=credentials,
-        )
-        user_info = user_info_service.userinfo().get().execute()
-        assert user_info.get("email"), "Email not found in infos"
-        st.session_state["google_auth_code"] = auth_code
-        st.session_state["user_info"] = user_info
-        ls_set("user_info", user_info)
-    else:
-        authorization_url, state = flow.authorization_url(
-            access_type="offline",
-            include_granted_scopes="true",
-        )
-        st.link_button("Sign in with Google", authorization_url)
+#     if auth_code:
+#         flow.fetch_token(code=auth_code)
+#         credentials = flow.credentials
+#         st.session_state["credentials"] = credentials  # Store credentials
+#         st.write("Login Done")
+#         user_info_service = build(
+#             serviceName="oauth2",
+#             version="v2",
+#             credentials=credentials,
+#         )
+#         user_info = user_info_service.userinfo().get().execute()
+#         assert user_info.get("email"), "Email not found in infos"
+#         st.session_state["google_auth_code"] = auth_code
+#         st.session_state["user_info"] = user_info
+#         ls_set("user_info", user_info)
+#     else:
+#         authorization_url, state = flow.authorization_url(
+#             access_type="offline",
+#             include_granted_scopes="true",
+#         )
+#         st.link_button("Sign in with Google", authorization_url)
 
-def logout():
-    # Clear session state
-    for key in st.session_state.keys():
-        del st.session_state[key]
+# def logout():
+#     # Clear session state
+#     for key in st.session_state.keys():
+#         del st.session_state[key]
     
-    # Clear local storage
-    ls_set("user_info", None)
-    ls_set("credentials", None)
+#     # Clear local storage
+#     ls_set("user_info", None)
+#     ls_set("credentials", None)
     
-    # Redirect to main page
-    st.write("Logged out successfully!")
-    st.button("Return to Home")
+#     # Redirect to main page
+#     st.write("Logged out successfully!")
+#     st.button("Return to Home")
 
 
-# Add logout button
-if st.sidebar.button("Logout"):
-    logout()
+# # Add logout button
+# if st.sidebar.button("Logout"):
+#     logout()
 
-def main():
-    init_session()
+# def main():
+#     init_session()
     
-    if "user_info" not in st.session_state:
-        auth_flow()
-    else:
-        st.write("Welcome back!")
-        st.write(f"User: {st.session_state['user_info']['email']}")
-        # Display user profile image
-        user_image_url = st.session_state["user_info"]["picture"]
-        st.image(user_image_url, width=50)
+#     if "user_info" not in st.session_state:
+#         auth_flow()
+#     else:
+#         st.write("Welcome back!")
+#         st.write(f"User: {st.session_state['user_info']['email']}")
+#         # Display user profile image
+#         user_image_url = st.session_state["user_info"]["picture"]
+#         st.image(user_image_url, width=50)
     
-    if "user_info" in st.session_state:
-        st.write("Main App Content")
+#     if "user_info" in st.session_state:
+#         st.write("Main App Content")
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
-# st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
-# st.title("YouTube Viral ChatBot")
+# Path to the image file (ensure you download or place the image locally if needed)
+image_path = "YoutubeViralChatbot.png"  # This should be the path where the image is stored
 
-# Updated get_service to handle missing credentials
+# Open the image file in binary mode
+with open(image_path, "rb") as image_file:
+    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+
+# Use Streamlit to display the image from base64 string
+st.image(f"data:image/png;base64,{encoded_string}", use_column_width=200)
+
+st.title("YouTube Viral ChatBot")
+
+api_key_input = st.sidebar.text_input("ENTER YOUR YOUTUBE API KEY", type="password")
+st.session_state["api_key"] = api_key_input
+
+# Initialize YouTube API service
 def get_service():
-    if "credentials" not in st.session_state or st.session_state["credentials"] is None:
-        st.error("Please sign in first.")
-        return None
     try:
-        service = build("youtube", "v3", credentials=st.session_state["credentials"])
+        service = build('youtube', "v3", developerKey=st.session_state["api_key"])
         return service
     except Exception as e:
         st.error(f"Error building YouTube service: {e}")
         return None
-    
+
 def execute_api_request(client_library_function, **kwargs):
+    service = get_service()
+    if service is None:
+        return None
     try:
         response = client_library_function(**kwargs).execute()
         return response
     except Exception as e:
         st.error(f"API request failed: {e}")
         return None
+
+
+# Updated get_service to handle missing credentials
+# def get_service():
+#     if "credentials" not in st.session_state or st.session_state["credentials"] is None:
+#         st.error("Please sign in first.")
+#         return None
+#     try:
+#         service = build("youtube", "v3", credentials=st.session_state["credentials"])
+#         return service
+#     except Exception as e:
+#         st.error(f"Error building YouTube service: {e}")
+#         return None
+    
+# def execute_api_request(client_library_function, **kwargs):
+#     try:
+#         response = client_library_function(**kwargs).execute()
+#         return response
+#     except Exception as e:
+#         st.error(f"API request failed: {e}")
+#         return None
 
 
 options = [
@@ -3330,12 +3400,12 @@ elif selected_option == "Keyword Research":
     with st.form("keyword_research_form"):
         if keyword_option in ["Show related keywords", "Analyze keyword competition"]:
             keyword = st.text_input("Enter a keyword:")
-            location = st.text_input("Enter location:")
+            location = st.text_input("Enter location (e.g. US, IN):")
 
         elif keyword_option == "Compare keywords":
             keyword = st.text_input("Enter first keyword:")
             keyword2 = st.text_input("Enter second keyword:")
-            location = st.text_input("Enter location:")
+            location = st.text_input("Enter location (e.g. US, IN):")
             
         elif keyword_option == "Show related keywords":
             keyword = st.text_input("Enter keyword(s) (comma-separated):")
@@ -4233,8 +4303,4 @@ elif selected_option == "Competition Analysis":
                     st.write(result)
             except Exception as e:
                 st.error(f"Analysis failed: {str(e)}")
- # PROTECTED CODE ENDS HERE ⤴
 
-else:
-    # Message for non-subscribed users
-    st.warning("You need to subscribe to access this content.")
