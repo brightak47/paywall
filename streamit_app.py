@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_cookies_manager import EncryptedCookieManager
 from st_paywall import add_auth
 import requests
 import pytz
@@ -24,6 +25,33 @@ import numpy as np
 import json
 import re
 
+# Initialize cookies
+cookies = EncryptedCookieManager(prefix="my_app")
+
+# Load the cookies (must be called before accessing them)
+if not cookies.ready():
+    st.stop()
+
+# Function to set a persistent user cookie
+def set_user_cookie(username):
+    cookies["user_data"] = username
+    cookies.save()  # Save the cookie
+    st.success(f"Welcome, {username}! Your session is saved.")
+
+# Function to display a welcome message if the user cookie exists
+def display_welcome_message():
+    if "user_data" in cookies:
+        st.write(f"Welcome back, {cookies['user_data']}!")
+    else:
+        st.write("No user cookie found.")
+
+# Function to delete the user cookie
+def delete_user_cookie():
+    if "user_data" in cookies:
+        del cookies["user_data"]
+        cookies.save()
+        st.info("Cookie deleted!")
+        
 st.set_page_config(layout="wide")
 # st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
 st.title("Youtube Viral Chatbot 🚀")
@@ -69,29 +97,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# Initialize cookies
-cookies = EncryptedCookieManager(prefix="my_app")
-
-# Load the cookies (you must call this before accessing them)
-if not cookies.ready():
-    st.stop()
-
-# Set a cookie
-if st.button("Set Cookie"):
-    cookies["user_data"] = "example_user"
-    cookies.save()  # Save the cookie
-    st.write("Cookie set!")
-
-# Access a cookie
-if "user_data" in cookies:
-    st.write("Cookie value:", cookies["user_data"])
-
-# Delete a cookie
-if st.button("Delete Cookie"):
-    del cookies["user_data"]
-    cookies.save()
-    st.write("Cookie deleted!")
 # Helper function to convert large numbers to thousands, millions, etc.
 def format_number(number):
     if number >= 1_000_000_000:
