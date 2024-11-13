@@ -48,8 +48,6 @@ st.write(f"Subscription Status: {st.session_state.get('user_subscribed', False)}
 st.write("🎉 Yay! You're all set and subscribed! 🎉")
 st.write(f'By the way, your email is: {st.session_state.get("email", "unknown")}')
 
-if __name__ == "__main__":
-    main()
 # Helper function to convert large numbers to thousands, millions, etc.
 def format_number(number):
     if number >= 1_000_000_000:
