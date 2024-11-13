@@ -27,6 +27,7 @@ import re
 
 # Set page configuration
 st.set_page_config(layout="wide")
+
 # Initialize cookies with password from secrets
 cookies = EncryptedCookieManager(
     prefix="my_app",
@@ -37,64 +38,61 @@ cookies = EncryptedCookieManager(
 if not cookies.ready():
     st.stop()
 
-# Set and manage cookies as per your logic
+# Set and manage cookies
 if st.button("Set Persistent Cookie"):
     cookies["user_data"] = "example_user"
-    cookies.save()  # Saves the cookie in the browser
+    cookies.save()
     st.write("Persistent cookie set!")
 
-# Access a cookie that persists across sessions
 if "user_data" in cookies:
     st.write("Welcome back,", cookies["user_data"])
 else:
     st.write("No user cookie found.")
 
-# Option to delete the cookie
 if st.button("Delete Cookie"):
     del cookies["user_data"]
     cookies.save()
     st.write("Cookie deleted!")
-# st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
+
 st.title("Youtube Viral Chatbot 🚀")
 
-# HTML for a justified paragraph
+# Justified paragraph
 justified_paragraph = """
 <div style='text-align: justify;'>
-    This is one of the most powerful AI chatbot to make viral videos <br><br> that get a million of views in short 
+    This is one of the most powerful AI chatbots to make viral videos <br><br> that get millions of views in a short 
     time. <br><br> Go ahead 🚀.
 </div>
 """
-
-# Render the HTML
 st.markdown(justified_paragraph, unsafe_allow_html=True)
 
+# Authentication and subscription
 add_auth(required=True)
 
-# ONLY AFTER THE AUTHENTICATION + SUBSCRIPTION, THE USER WILL SEE THIS ⤵
-# The email and subscription status is stored in session state.
-st.write(f"Subscription Status: {st.session_state.user_subscribed}")
+# Subscription information display
+st.write(f"Subscription Status: {st.session_state.get('user_subscribed', False)}")
 st.write("🎉 Yay! You're all set and subscribed! 🎉")
-st.write(f'By the way, your email is: {st.session_state.email}')
-# Helper function to convert large numbers to thousands, millions, etc.
-# List of users who have requested refunds
-# Ideally, this would be a database or external list you update dynamically
+st.write(f'By the way, your email is: {st.session_state.get("email", "unknown")}')
+
+# Blocked users list
 blocked_users = ["user1@example.com", "user2@example.com"]
 
 # Function to check if user is blocked
 def is_user_blocked(user_id):
     return user_id in blocked_users
 
-# Main application code
+# Main application
 def main():
-    # Get user ID from st-paywall (assuming it provides user ID functionality)
-    user_id = st_paywall.get_user_id()  # Example function; adjust as needed
+    try:
+        user_id = st_paywall.get_user_id()  # Replace with correct function if needed
+    except AttributeError:
+        user_id = "unknown_user"  # Placeholder if function not available
 
-    # Check if user is blocked
+    # Blocked user check
     if is_user_blocked(user_id):
         st.warning("Access Denied: This account has been restricted due to a refund request.")
     else:
         st.write("Welcome to the premium content!")
-        # Add the rest of your application code here
+        # Your premium content here
 
 if __name__ == "__main__":
     main()
