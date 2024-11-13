@@ -48,24 +48,6 @@ st.write(f"Subscription Status: {st.session_state.get('user_subscribed', False)}
 st.write("🎉 Yay! You're all set and subscribed! 🎉")
 st.write(f'By the way, your email is: {st.session_state.get("email", "unknown")}')
 
-# List of blocked users
-blocked_users = ["brightak47@gmail.com", "user2@example.com"]
-
-# Function to check if a user is blocked
-def is_user_blocked(user_id):
-    return user_id in blocked_users
-
-# Main application
-def main():
-    # Retrieve user ID dynamically from the authentication method
-    user_id = get_user_id()  # Replace with the actual function to get the logged-in user’s ID
-
-    # Blocked user check
-    if is_user_blocked(user_id):
-        st.warning("Access Denied: This account has been restricted due to a refund request.")
-    else:
-        st.write("Welcome to the premium content!")
-        # Place premium content here
 if __name__ == "__main__":
     main()
 # Helper function to convert large numbers to thousands, millions, etc.
