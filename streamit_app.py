@@ -25,6 +25,8 @@ import numpy as np
 import json
 import re
 
+# Set page configuration
+st.set_page_config(layout="wide")
 # Initialize cookies with password from secrets
 cookies = EncryptedCookieManager(
     prefix="my_app",
@@ -52,7 +54,6 @@ if st.button("Delete Cookie"):
     del cookies["user_data"]
     cookies.save()
     st.write("Cookie deleted!")
-st.set_page_config(layout="wide")
 # st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
 st.title("Youtube Viral Chatbot 🚀")
 
