@@ -28,39 +28,14 @@ import re
 
 # Set page configuration
 st.set_page_config(layout="wide")
-# Initialize cookies with password from secrets
-cookies = EncryptedCookieManager(
-    prefix="my_app",
-    password=st.secrets["cookies"]["password"]
-)
-
-# Load the cookies (must be called before accessing them)
-if not cookies.ready():
-    st.stop()
-
-# Set and manage cookies
-if st.button("Set Persistent Cookie"):
-    cookies["user_data"] = "example_user"
-    cookies.save()
-    st.write("Persistent cookie set!")
-
-if "user_data" in cookies:
-    st.write("Welcome back,", cookies["user_data"])
-else:
-    st.write("No user cookie found.")
-
-if st.button("Delete Cookie"):
-    del cookies["user_data"]
-    cookies.save()
-    st.write("Cookie deleted!")
-
+st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
 st.title("Youtube Viral Chatbot 🚀")
 
 # Justified paragraph
 justified_paragraph = """
 <div style='text-align: justify;'>
     This is one of the most powerful AI chatbots to make viral videos <br><br> that get millions of views in a short 
-    time. <br><br> Go ahead 🚀.
+    time. Go ahead 🚀.
 </div>
 """
 st.markdown(justified_paragraph, unsafe_allow_html=True)
@@ -3013,7 +2988,7 @@ def upload_pattern_insights(channel_url):
 #     main()
 
 # Path to the image file (ensure you download or place the image locally if needed)
-image_path = "YoutubeViralChatbot.png"  # This should be the path where the image is stored
+# image_path = "YoutubeViralChatbot.png"  # This should be the path where the image is stored
 
 # Open the image file in binary mode
 with open(image_path, "rb") as image_file:
