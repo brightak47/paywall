@@ -58,7 +58,7 @@ def is_user_blocked(user_id):
 # Main application
 def main():
     # Temporarily replace get_user_id with a placeholder until it is correctly implemented
-    user_id = "example_user@example.com"  # Replace with the correct method or function to get user_id
+    user_id = "brightak47@gmail.com"  # Replace with the correct method or function to get user_id
 
     # Blocked user check
     if is_user_blocked(user_id):
