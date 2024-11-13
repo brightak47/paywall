@@ -23,6 +23,7 @@ from dateutil import parser
 import pandas as pd
 import numpy as np
 import json
+import base64
 import re
 
 # Set page configuration
