@@ -28,7 +28,7 @@ import re
 
 # Set page configuration
 st.set_page_config(layout="wide")
-st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=250)
+st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=400)
 st.title("Youtube Viral Chatbot 🚀")
 
 # Justified paragraph
@@ -2991,8 +2991,8 @@ def upload_pattern_insights(channel_url):
 # image_path = "YoutubeViralChatbot.png"  # This should be the path where the image is stored
 
 # Open the image file in binary mode
-with open(image_path, "rb") as image_file:
-    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+# with open(image_path, "rb") as image_file:
+   # encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
 
 # Use Streamlit to display the image from base64 string
 # st.image(f"data:image/png;base64,{encoded_string}", use_column_width=200)
