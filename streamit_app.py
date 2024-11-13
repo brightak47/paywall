@@ -27,7 +27,6 @@ import re
 
 # Set page configuration
 st.set_page_config(layout="wide")
-
 # Initialize cookies with password from secrets
 cookies = EncryptedCookieManager(
     prefix="my_app",
@@ -82,10 +81,8 @@ def is_user_blocked(user_id):
 
 # Main application
 def main():
-    try:
-        user_id = st_paywall.get_user_id()  # Replace with correct function if needed
-    except AttributeError:
-        user_id = "unknown_user"  # Placeholder if function not available
+    # Temporarily replace get_user_id with a placeholder until it is correctly implemented
+    user_id = "example_user@example.com"  # Replace with the correct method or function to get user_id
 
     # Blocked user check
     if is_user_blocked(user_id):
