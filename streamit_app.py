@@ -49,7 +49,7 @@ st.write("🎉 Yay! You're all set and subscribed! 🎉")
 st.write(f'By the way, your email is: {st.session_state.get("email", "unknown")}')
 
 # Blocked users list
-blocked_users = ["user1@example.com", "user2@example.com"]
+blocked_users = ["brightak47@gmail.com", "user2@example.com"]
 
 # Function to check if user is blocked
 def is_user_blocked(user_id):
