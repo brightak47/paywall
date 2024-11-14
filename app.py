@@ -28,8 +28,8 @@ import re
 
 # Set page configuration
 st.set_page_config(layout="wide")
-st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=400)
-st.title("Youtube Viral Chatbot 🚀")
+# st.image("https://raw.githubusercontent.com/brightak47/paywall/main/YoutubeViralChatbot.png", width=400)
+# st.title("Youtube Viral Chatbot 🚀")
 
 # Justified paragraph
 justified_paragraph = """
